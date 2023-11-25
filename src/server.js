@@ -10,10 +10,11 @@ const port = 3001;
 app.use(bodyParser.json());
 app.use(cors());
 
+
 const db = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "new_password",
+  password: "",
   database: "captone",
 });
 
