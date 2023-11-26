@@ -61,6 +61,10 @@ import './styles.css';
 import SignInForm from './SignIn';
 import SignUpForm from './SignUp';
 import Home from './Home';
+import Bengin from './Bengin';
+import Malignant from './Malignant';
+import Normal from './Normal';
+
 
 export default function App() {
   const [type, setType] = useState('signIn');
@@ -114,6 +118,10 @@ export default function App() {
             }
           />
           <Route path="/home" element={<Home />} />
+          <Route path="/bengin" element={<Bengin />} />
+          <Route path="/malignant" element={<Malignant />} />
+          <Route path="/normal" element={<Normal />} />
+
         </Routes>
       </div>
     </Router>
