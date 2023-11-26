@@ -73,7 +73,7 @@ const Home = () => {
   };
 
   return (
-    <div className="doctor-upload-container">
+    <div className="doctor-upload">
       <h2>Upload Medical Image</h2>
       <p>Select an image for analysis:</p>
       <input type="file" accept="image/*" onChange={handleImageChange} />
