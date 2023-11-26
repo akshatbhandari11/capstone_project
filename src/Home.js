@@ -97,7 +97,6 @@
 // };
 
 // export default Home;
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -138,17 +137,12 @@ const Home = () => {
       const response = await fetch('http://127.0.0.1:5000/predict', {
         method: 'POST',
         body: formData,
-        mode: 'no-cors',
-            headers: {
-                'Content-Type': 'application/json',
-            }
       });
 
-      console.log(response);
       if (response.ok) {
         const result = await response.json();
         setPredictedLabel(result.predicted_label);
-
+        console.log("okay")
         // Navigate based on the predicted label
         if (result.predicted_label === 'Bengin cases') {
           navigate('/bengin');
@@ -165,8 +159,6 @@ const Home = () => {
       alert('Image upload failed');
     }
   };
-
- 
 
   return (
     <div>
