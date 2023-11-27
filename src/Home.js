@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Header from './Header';
 
 const Home = () => {
   const [image, setImage] = useState(null);
@@ -74,6 +75,7 @@ const Home = () => {
 
   return (
     <div className="doctor-upload">
+      <Header/>
       <h2>Upload Medical Image</h2>
       <p>Select an image for analysis:</p>
       <input type="file" accept="image/*" onChange={handleImageChange} />

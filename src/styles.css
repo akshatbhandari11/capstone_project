@@ -1,3 +1,5 @@
+/* styles.css */
+
 .App {
   font-family: sans-serif;
   text-align: center;
@@ -42,7 +44,7 @@ span {
 }
 
 a {
-  color: #333;
+  color: #001f3f;
   font-size: 14px;
   text-decoration: none;
   margin: 15px 0;
@@ -50,8 +52,8 @@ a {
 
 button {
   border-radius: 20px;
-  border: 1px solid #ff4b2b;
-  background-color: #ff4b2b;
+  border: 1px solid #001f3f;
+  background-color: #001f3f;
   color: #ffffff;
   font-size: 12px;
   font-weight: bold;
@@ -102,6 +104,8 @@ input {
   width: 768px;
   max-width: 100%;
   min-height: 480px;
+  margin-top: 50px;
+  position: relative;
 }
 
 .form-container {
@@ -158,6 +162,9 @@ input {
   overflow: hidden;
   transition: transform 0.6s ease-in-out;
   z-index: 100;
+  background-image: url('./background2.jpg');
+  background-size: cover;
+  background-position: center;
 }
 
 .container.right-panel-active .overlay-container {
@@ -165,9 +172,9 @@ input {
 }
 
 .overlay {
-  background: #ff416c;
-  background: -webkit-linear-gradient(to right, #ff4b2b, #ff416c);
-  background: linear-gradient(to right, #ff4b2b, #ff416c);
+  background: #008B8B;
+  background: -webkit-linear-gradient(to right, #008B8B, #008B8B);
+  background: linear-gradient(to right, #008B8B, #008B8B);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 0 0;
@@ -254,4 +261,11 @@ footer i {
 footer a {
   color: #3c97bf;
   text-decoration: none;
+}
+
+header {
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  padding: 10px;
 }
