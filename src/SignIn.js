@@ -97,7 +97,10 @@ function SignInForm() {
   const [state, setState] = React.useState({
     email: "",
     password: ""
+
   });
+
+  const[showPassword,setShowPassword] = React.useState(false);
 
   const handleChange = (evt) => {
     const value = evt.target.value;
@@ -105,6 +108,10 @@ function SignInForm() {
       ...state,
       [evt.target.name]: value
     });
+  };
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword)=> !prevShowPassword);
   };
 
   const handleOnSubmit = async (evt) => {
@@ -125,8 +132,12 @@ function SignInForm() {
         const result = await response.json();
         alert(result.message);
 
-        // Navigate to the home page upon successful sign-in
-        navigate("/home");
+        if(result.success){
+          // Navigate to the home page upon successful sign-in
+          navigate("/home");
+        }
+
+        
       } else {
         alert("Sign-in failed");
       }
@@ -141,6 +152,12 @@ function SignInForm() {
       email: "",
       password: ""
     });
+  };
+
+  const handleForgotPassword = (evt) => {
+    evt.preventDefault();
+    // Navigate to the forgot password page
+    navigate("/forgotpassword");
   };
 
   return (
@@ -166,18 +183,26 @@ function SignInForm() {
           value={state.email}
           onChange={handleChange}
         />
-        <input
-          type="password"
-          name="password"
-          placeholder="Password"
-          value={state.password}
-          onChange={handleChange}
-        />
-        <a href="#">Forgot your password?</a>
+       
+          <input
+            type={showPassword ? "text" : "password"}
+            name="password"
+            placeholder="Password"
+            value={state.password}
+            onChange={handleChange}
+          />
+          <i
+            className={`password-toggle-icon ${
+              showPassword ? "fas fa-eye" : "fas fa-eye-slash" 
+            }`}
+            onClick={togglePasswordVisibility}
+          />
+          
+       
+        <a href="#" onClick={handleForgotPassword}>Forgot your password?</a>
         <button type="submit">Sign In</button>
       </form>
     </div>
   );
 }
-
 export default SignInForm;

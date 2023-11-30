@@ -6,11 +6,10 @@ const HeaderContainer = styled.header`
   background-color: #001f3f;
   color: #fff;
   font-size: 15px;
-  padding: 2px;
+  padding: 10px; /* Adjust padding to your preference */
   width: 100%;
-  margin-top: -100px;
-  
   text-align: center;
+  z-index: -1; /* Ensure the header stays above other elements */
 `;
 
 const Header = () => {

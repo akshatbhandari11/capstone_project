@@ -11,6 +11,7 @@ import Normal from './Normal';
 import First from './First';
 
 import SignInSignUp from './SignInSignUp';
+import ForgotPassword from './ForgotPassword';
 
 
 
@@ -24,12 +25,13 @@ export default function App() {
      
 
         <Routes>
-          <Route path="/" element={<SignInSignUp />} />
+          <Route path="/signin-signup" element={<SignInSignUp />} />
           <Route path="/home" element={<Home />} />
           <Route path="/bengin" element={<Bengin />} />
           <Route path="/malignant" element={<Malignant />} />
           <Route path="/normal" element={<Normal />} />
-          <Route path="/first" element={<First />} />
+          <Route path="/" element={<First />} />
+          <Route path = "/forgotpassword" element={<ForgotPassword/>}/>
 
 
         </Routes>

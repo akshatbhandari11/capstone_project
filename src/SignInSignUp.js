@@ -16,7 +16,7 @@ const SignInSignUp = () => {
 
   return (
     <>
-      <Header /> {/* Include the Header component here */}
+      <Header className="full-width" />
       <div className={containerClass} id="container">
         <SignUpForm />
         <SignInForm />
@@ -30,7 +30,7 @@ const SignInSignUp = () => {
       </button>
     </div>
     <div className="overlay-panel overlay-right">
-      <h1>Hello, Friend!</h1>
+      <h1>Hello, Doc!</h1>
       <p>Enter your personal details and start the journey with us</p>
       <button className="ghost" id="signUp" onClick={() => handleOnClick('signUp')}>
         Sign Up
