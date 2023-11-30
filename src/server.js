@@ -15,7 +15,7 @@ const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
-  database: "captone",
+  database: "capstone",
 });
 
 db.connect((err) => {
@@ -76,6 +76,35 @@ app.post("/signin", async (req, res) => {
       }
     }
   );
+});
+
+app.post("/forgotpassword", async (req, res) => {
+  const { username, newPassword, confirmPassword } = req.body;
+
+  // Perform validation checks
+  if (newPassword !== confirmPassword) {
+    return res.status(400).json({ success: false, message: "Passwords do not match" });
+  }
+
+  // Hash the new password before storing it in the database
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+  // Implement logic to update the password in the database
+  const sql = "UPDATE users SET password = ? WHERE email = ?";
+  db.query(sql, [hashedPassword, username], (err, results) => {
+    if (err) {
+      console.error("Error updating password:", err);
+      return res.status(500).json({ success: false, message: "Password update failed" });
+    }
+
+    // Check if any rows were affected (username exists)
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    // Respond with success
+    res.json({ success: true, message: "Password updated successfully" });
+  });
 });
 
 app.listen(port, () => {
