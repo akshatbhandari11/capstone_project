@@ -1,62 +1,22 @@
-# from flask import Flask, request, jsonify
-# from PIL import Image
-# import numpy as np
-# import joblib
-# import cv2
-
-# app = Flask(__name__)
-
-# # Load the machine learning model
-# model = joblib.load('beni_mali.pkl')
-
-# @app.route('/predict', methods=['POST'])
-# def predict():
-#     try:
-#         # Get the uploaded image from the request
-#         if 'file' not in request.files:
-#             return jsonify({'error': 'No file part'}), 400
-
-#         uploaded_file = request.files['file']
-#         print(uploaded_file)
-#         if uploaded_file.filename == '':
-#             return jsonify({'error': 'No selected file'}), 400
-        
-#         print(uploaded_file.filename)
-#         # Read and preprocess the image
-#         image = Image.open(uploaded_file)
-#         image = image.convert('L')  # Convert to grayscale
-#         image = image.resize((256, 256))
-#         test_image = np.array(image).reshape(-1, 256, 256, 1) / 255.0
-
-#         # Make predictions
-#         predictions = model.predict(test_image)
-#         predicted_class = np.argmax(predictions)
-
-#         class_labels = ['Bengin cases', 'Malignant cases', 'Normal cases']
-#         predicted_label = class_labels[predicted_class]
-#         print(predicted_label)
-
-#         return jsonify({'predicted_label': predicted_label}), 200
-
-#     except Exception as e:
-#         print("error")
-#         return jsonify({'error': str(e)}), 500
-
-# if __name__ == '__main__':
-#     app.run(debug=True)
-
-
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 from PIL import Image
 import numpy as np
 import joblib
-
-app = Flask(__name__)
-CORS(app)
+import subprocess
+import base64
+from io import BytesIO
 
 # Load the machine learning model
 model = joblib.load('beni_mali.pkl')
+
+def get_tumor_stage(image_path):
+    stage_command = f'python stage.py "{image_path}"'
+    stage_output = subprocess.check_output(stage_command, shell=True).decode('utf-8').strip()
+    return stage_output
+
+app = Flask(__name__)
+CORS(app)
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -77,7 +37,18 @@ def predict():
         class_labels = ['Bengin cases', 'Malignant cases', 'Normal cases']
         predicted_label = class_labels[predicted_class]
         print(predicted_label)
-        return jsonify({'predicted_label': predicted_label})
+
+        tumor_stage = None
+        img_data = None
+
+        # Call stage.py only if the predicted label is "Malignant"
+        if predicted_label == 'Malignant cases':
+            tumor_stage = get_tumor_stage(uploaded_file)
+            
+            # Add logic to convert the output image to base64
+            img_data = base64.b64encode(open('output_image.png', 'rb').read()).decode('utf-8')
+
+        return jsonify({'predicted_label': predicted_label, 'tumor_stage': tumor_stage, 'img_data': img_data})
 
     except Exception as e:
         return jsonify({'error': str(e)}), 500

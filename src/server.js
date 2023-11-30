@@ -15,7 +15,7 @@ const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "",
-  database: "captone",
+  database: "capstone",
 });
 
 db.connect((err) => {
@@ -25,7 +25,6 @@ db.connect((err) => {
     console.log("Connected to the database");
   }
 });
-
 // Sign-up route
 app.post("/signup", async (req, res) => {
     console.log("hitting api");
@@ -52,6 +51,7 @@ app.post("/signup", async (req, res) => {
 // Sign-in route
 app.post("/signin", async (req, res) => {
   const { email, password } = req.body;
+  let match = false; // Declare match outside of the block
 
   // Perform the database query
   db.query(
@@ -64,7 +64,7 @@ app.post("/signin", async (req, res) => {
       } else {
         if (results.length > 0) {
           // Compare the provided password with the hashed password from the database
-          const match = await bcrypt.compare(password, results[0].password);
+          match = await bcrypt.compare(password, results[0].password);
           if (match) {
             res.json({ success: true, message: "Sign-in successful" });
           } else {
@@ -74,9 +74,77 @@ app.post("/signin", async (req, res) => {
           res.json({ success: false, message: "User not found" });
         }
       }
+      if (!match) {
+        // Do not redirect to the home page if the password is incorrect
+        return;
+      }
     }
   );
 });
+
+// Add this route to handle forgot password requests
+// app.post("/forgotpassword", async (req, res) => {
+//   const { username, newPassword, confirmPassword } = req.body;
+
+//   if (newPassword !== confirmPassword) {
+//     return res.status(400).json({ success: false, message: "Passwords do not match" });
+//   }
+
+//   // Add validation logic here to check if newPassword and confirmPassword match
+
+//   try {
+//     // Hash the new password before updating it in the database
+//     const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+//     // Update the user's password in the database
+//     const updateSql = "UPDATE users SET password = ? WHERE username = ?";
+//     db.query(updateSql, [hashedPassword, username], (err, results) => {
+//       if (err) {
+//         console.error("Error during password update:", err);
+//         res.status(500).json({ success: false, message: "Password update failed" });
+//       } else {
+//         console.log("Password update successful. Rows affected:", results.affectedRows);
+//         res.json({ success: true, message: "Password update successful" });
+//       }
+//     });
+//   } catch (error) {
+//     console.error("Error during password update:", error);
+//     res.status(500).json({ success: false, message: "Password update failed" });
+//   }
+// });
+
+// In your server.js or routes file
+app.post("/forgotpassword", async (req, res) => {
+  const { username, newPassword, confirmPassword } = req.body;
+
+  // Perform validation checks
+  if (newPassword !== confirmPassword) {
+    return res.status(400).json({ success: false, message: "Passwords do not match" });
+  }
+
+  // Hash the new password before storing it in the database
+  const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+  // Implement logic to update the password in the database
+  const sql = "UPDATE users SET password = ? WHERE email = ?";
+  db.query(sql, [hashedPassword, username], (err, results) => {
+    if (err) {
+      console.error("Error updating password:", err);
+      return res.status(500).json({ success: false, message: "Password update failed" });
+    }
+
+    // Check if any rows were affected (username exists)
+    if (results.affectedRows === 0) {
+      return res.status(404).json({ success: false, message: "User not found" });
+    }
+
+    // Respond with success
+    res.json({ success: true, message: "Password updated successfully" });
+  });
+});
+
+
+
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
