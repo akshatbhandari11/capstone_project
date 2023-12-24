@@ -26,7 +26,7 @@ def predict():
 
         class_labels = ['Bengin cases', 'Malignant cases', 'Normal cases']
         predicted_label = class_labels[predicted_class]
-
+        print(predicted_label)
         return jsonify({'predicted_label': predicted_label})
 
     except Exception as e:
@@ -72,6 +72,7 @@ def config_stage_endpoint():
 
         if result_stage is not None:
             # Return the result_stage in the JSON response
+            print(result_stage)
             return jsonify({'result_stage': result_stage})
         else:
             return jsonify({'error': 'No contour found'}), 500

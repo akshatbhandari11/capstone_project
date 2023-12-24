@@ -1,6 +1,7 @@
 import React from 'react';
 import styled, { ThemeProvider } from 'styled-components';
 import { useNavigate } from 'react-router-dom'; 
+import HospitalList from './HospitalList';
 
 const firstPageTheme = {
   textColor: '#001f3f',
@@ -41,7 +42,7 @@ const Header = styled.header`
   font-size: 15px;
   padding: 2px;
   width: 100%;
-  margin-top: -420px;
+  margin-top: -50px;
   text-align: center;
   display: flex;
   flex-direction: column;
@@ -117,7 +118,7 @@ const First = () => {
             Lung cancer, marked by uncontrolled cell growth in the lungs, poses a significant health challenge, with smoking, environmental factors, and genetic predisposition as common contributors.
              Tumors in the lungs are categorized as benign or malignant, the latter having the potential to spread. Staging plays a crucial role in assessing the disease's severity, with Stage I denoting localized tumors, Stage II indicating local advancement, and Stage III representing distant metastasis. Early detection and precise staging are paramount for tailoring effective treatment plans. The journey from Stage I to Stage III underscores the urgency of proactive measures, emphasizing the significance of awareness and regular screenings in combating lung cancer and improving patient outcomes.
           </AbstractParagraph>
-        
+          <HospitalList />
         
         <Footer>
           <p>&copy; Team 103</p>

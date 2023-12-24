@@ -24,7 +24,7 @@ def categorize_stage_colour(tumor_size):
         elif 3 <= tumor_size < 7:
             return (255, 255, 0)  # Saffron
         else:
-            return (255, 0, 0)    # Red
+            return (0, 0, 255)    # Red
 
 
 
@@ -71,8 +71,8 @@ def run_stage_processing(image):
                 max_diameter = diameter
                 longest_contour = contour
 
-        dpi = 25
-        length_in_cm = (max_diameter / dpi) * 2.54
+        
+        length_in_cm = (max_diameter / 25) * 2.54
 
         if longest_contour is not None:
             longest_contour_image = np.zeros_like(lung_image)
